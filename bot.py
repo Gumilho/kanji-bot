@@ -1,5 +1,6 @@
 import discord
 import asyncio
+import os
 
 token = open('token.json','r')
 client = discord.Client()
@@ -25,4 +26,4 @@ async def on_message(message):
 	else:
 		await message.channel.send("Hi")
 
-client.run(token.token)
+client.run(os.getenv('TOKEN')
