@@ -1,6 +1,7 @@
 import discord
 import asyncio
 
+token = open('token.json','r')
 client = discord.Client()
 
 async def bgtask():
@@ -24,4 +25,4 @@ async def on_message(message):
 	else:
 		await message.channel.send("Hi")
 
-client.run("NTY5NTY0NjcwODg5ODIwMTYw.XLyelw.L8UfCWLheY-5f4uGXpwqnYXYe0c")
+client.run(token.token)
