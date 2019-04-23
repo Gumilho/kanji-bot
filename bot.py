@@ -7,10 +7,13 @@ client = discord.Client()
 async def bgtask():
 	counter = 0
 	channel = client.get_guild(493580129025654785).get_channel(493580129025654787)
+	#await channel.send('楽')
 	while True:
-        	counter += 1
-        	await channel.send(counter)
-        	await asyncio.sleep(60)
+        counter += 1
+		await channel.send('aa')
+        await channel.send(counter)
+			
+        await asyncio.sleep(60)
 
 @client.event
 async def on_ready():
@@ -24,5 +27,5 @@ async def on_message(message):
 		return
 	else:
 		await message.channel.send("Hi")
-
-client.run(str(os.environ.get('TOKEN')))
+		
+client.run(os.environ['TOKEN'])
