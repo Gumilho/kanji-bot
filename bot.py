@@ -42,7 +42,6 @@ async def bgtask():
                 print(cur)
                 await asyncio.sleep(TIME)
 
-
 @client.event
 async def on_ready():
         await load()
@@ -56,5 +55,6 @@ async def on_message(message):
 	else:
 		await message.channel.send("Hi")
 		
+print('a')
 client.run(os.environ['TOKEN'])
 # client.run(json.load(open("token.json"))["TOKEN"])
