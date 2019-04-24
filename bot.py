@@ -7,8 +7,9 @@ import json
 client = discord.Client()
 SCORE = []
 KANJI = {}
-GUILD_ID = ""
-CHANNEL_ID = ""
+GUILD_ID = 0
+CHANNEL_ID = 0
+TIME = 0
 CONFIG = {}
 async def load():
         print("loading files...", end="")
@@ -18,6 +19,7 @@ async def load():
         KANJI = data["kanji"]
         GUILD_ID = config["guild"]
         CHANNEL_ID = config["channel"]
+        TIME = config["time"]
         print("done")
 
 async def save():
@@ -26,10 +28,10 @@ async def save():
         print("done")
 
 async def bgtask():
-	channel = client.get_guild(int(GUILD_ID)).get_channel(int(CHANNEL_ID))
+	channel = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
 	while True:
 		await channel.send(random.choice(KANJI))
-		await asyncio.sleep(config["time"])
+		await asyncio.sleep(TIME)
 
 @client.event
 async def on_ready():
