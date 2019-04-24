@@ -32,7 +32,7 @@ async def save():
         print("done")
 
 async def bgtask():
-	channel = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
+	channel = client.get_guild(int(GUILD_ID)).get_channel(int(CHANNEL_ID))
 	while True:
                 sel = random.choice(list(KANJI))
                 await channel.send(sel)
