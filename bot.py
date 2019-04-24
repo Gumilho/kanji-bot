@@ -20,7 +20,7 @@ async def load():
         SCORE = data["score"]
         KANJI = data["kanji"]
         GUILD_ID = config["guild"]
-        print(GUILD_ID)
+        # print(GUILD_ID)
         CHANNEL_ID = config["channel"]
         TIME = config["time"]
         # KANJI_SIZE = len(KANJI)
