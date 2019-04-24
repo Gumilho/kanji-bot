@@ -42,6 +42,7 @@ async def bgtask():
                 print(cur)
                 await asyncio.sleep(TIME)
 
+
 @client.event
 async def on_ready():
         await load()
