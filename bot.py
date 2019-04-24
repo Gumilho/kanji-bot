@@ -11,6 +11,8 @@ GUILD_ID = 0
 CHANNEL_ID = 0
 TIME = 0
 CONFIG = {}
+# KANJI_SIZE = 0
+cur = ""
 async def load():
         print("loading files...", end="")
         data = json.load(open("data.json","r"))
@@ -20,6 +22,7 @@ async def load():
         GUILD_ID = config["guild"]
         CHANNEL_ID = config["channel"]
         TIME = config["time"]
+        # KANJI_SIZE = len(KANJI)
         print("done")
 
 async def save():
@@ -30,8 +33,11 @@ async def save():
 async def bgtask():
 	channel = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
 	while True:
-		await channel.send(random.choice(KANJI))
-		await asyncio.sleep(TIME)
+                sel = random.choice(list(KANJI))
+                await channel.send(sel)
+                cur = KANJI[sel]
+                print(cur)
+                await asyncio.sleep(TIME)
 
 @client.event
 async def on_ready():
