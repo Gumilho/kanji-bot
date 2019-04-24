@@ -46,7 +46,7 @@ async def bgtask():
 async def on_ready():
         await load()
         print('hello')
-        client.loop.create_task(bgtask())
+        #client.loop.create_task(bgtask())
 
 @client.event
 async def on_message(message):
