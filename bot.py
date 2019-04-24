@@ -32,8 +32,9 @@ async def save():
         print("done")
 
 async def bgtask():
-	channel = client.get_guild(int(GUILD_ID)).get_channel(int(CHANNEL_ID))
-	while True:
+	# channel = client.get_guild(int(GUILD_ID)).get_channel(int(CHANNEL_ID))
+        channel = client.guilds[0].channels[1]
+        while True:
                 sel = random.choice(list(KANJI))
                 await channel.send(sel)
                 cur = KANJI[sel]
