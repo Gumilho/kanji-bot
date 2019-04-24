@@ -19,7 +19,7 @@ async def load():
         config = json.load(open("config.json","r"))
         SCORE = data["score"]
         KANJI = data["kanji"]
-        print(KANJI['a'])
+        print(KANJI.keys)
         GUILD_ID = config["guild"]
         # print(GUILD_ID)
         CHANNEL_ID = config["channel"]
@@ -37,8 +37,8 @@ async def bgtask():
         channel = client.guilds[0].channels[1]
         while True:
                 #sel = random.choice(list(KANJI))
-                await channel.send(sel)
-                cur = KANJI[sel]
+                #await channel.send(sel)
+                #cur = KANJI[sel]
                 print(cur)
                 await asyncio.sleep(TIME)
 
