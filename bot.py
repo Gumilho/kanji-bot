@@ -1,25 +1,40 @@
 import discord
 import asyncio
+import random
 import os
+import json
 
 client = discord.Client()
+SCORE = []
+KANJI = {}
+GUILD_ID = ""
+CHANNEL_ID = ""
+CONFIG = {}
+async def load():
+        print("loading files...", end="")
+        data = json.load(open("data.json","r"))
+        config = json.load(open("config.json","r"))
+        SCORE = data["score"]
+        KANJI = data["kanji"]
+        GUILD_ID = config["guild"]
+        CHANNEL_ID = config["channel"]
+        print("done")
+
+async def save():
+        print("saving files...", end="")
+        json.dump(SCORE,open("data.json","w"))
+        print("done")
 
 async def bgtask():
-	counter = 0
-	channel = client.get_guild(493580129025654785).get_channel(493580129025654787)
-	#await channel.send('楽')
+	channel = client.get_guild(int(GUILD_ID)).get_channel(int(CHANNEL_ID))
 	while True:
-        counter += 1
-		await channel.send('aa')
-        await channel.send(counter)
-			
-        await asyncio.sleep(60)
+		await channel.send(random.choice(KANJI))
+		await asyncio.sleep(config["time"])
 
 @client.event
 async def on_ready():
-	print("ready!")
-	client.loop.create_task(bgtask())
-	await client.change_presence(activity=discord.Game(name="Weeb"))
+        await load()
+        client.loop.create_task(bgtask())
 
 @client.event
 async def on_message(message):
@@ -29,3 +44,4 @@ async def on_message(message):
 		await message.channel.send("Hi")
 		
 client.run(os.environ['TOKEN'])
+# client.run(json.load(open("token.json"))["TOKEN"])
