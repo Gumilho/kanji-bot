@@ -37,6 +37,7 @@ async def bgtask():
         channel = client.guilds[0].channels[1]
         print("initializing background task")
         while True:
+                print(list(KANJI))
                 sel = random.choice(list(KANJI))
                 await channel.send(sel)
                 cur = KANJI[sel]
