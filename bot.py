@@ -13,7 +13,7 @@ TIME = 0
 CONFIG = {}
 # KANJI_SIZE = 0
 cur = ""
-def load():
+async def load():
         print("loading data... ", end="")
         data = json.load(open("data.json","r"))
         config = json.load(open("config.json","r"))
@@ -46,7 +46,8 @@ async def bgtask():
 
 @client.event
 async def on_ready():
-        load()
+        await load()
+        print(KANJI)
         client.loop.create_task(bgtask())
 
 @client.event
