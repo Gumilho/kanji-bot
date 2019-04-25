@@ -13,7 +13,7 @@ TIME = 0
 CONFIG = {}
 # KANJI_SIZE = 0
 cur = ""
-async def load():
+def load():
         print("loading data... ", end="")
         data = json.load(open("data.json","r"))
         config = json.load(open("config.json","r"))
