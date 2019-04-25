@@ -17,7 +17,7 @@ async def load():
         data = json.load(open("data.json","r"))
         config = json.load(open("config.json","r"))
         global KANJI
-        global SCORE
+        global SCOREhe
         global GUILD_ID
         global CHANNEL_ID
         global TIME
