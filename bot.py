@@ -5,6 +5,7 @@ import os
 import json
 
 client = discord.Client()
+
 SCORE = {}
 KANJI = {}
 GUILD_ID = 0
@@ -12,8 +13,9 @@ CHANNEL_ID = 0
 TIME = 0
 rand_list = []
 channel = discord.abc.GuildChannel()
-# KANJI_SIZE = 0
 cur = ""
+# KANJI_SIZE = 0
+
 async def load():
         global KANJI
         global SCORE
@@ -30,12 +32,9 @@ async def load():
         channel = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
         SCORE = data["score"].copy()
         KANJI = data["kanji"].copy()
-        #print(list(KANJI))
         GUILD_ID = config["guild"]
-        # print(GUILD_ID)
         CHANNEL_ID = config["channel"]
         TIME = config["time"]
-        # KANJI_SIZE = len(KANJI)
         print("done")
 
 async def create_list():
