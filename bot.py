@@ -19,7 +19,7 @@ async def load():
         config = json.load(open("config.json","r"))
         SCORE = data["score"]
         KANJI = data["kanji"]
-        print(KANJI.keys()[0])
+        print(list(KANJI)[0])
         GUILD_ID = config["guild"]
         # print(GUILD_ID)
         CHANNEL_ID = config["channel"]
