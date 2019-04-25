@@ -68,6 +68,7 @@ async def on_message(message):
 		return
 	else:
 		if message.content == cur:
+                        print("right!")
                         SCORE[cur]-=1
 		
 print("initializing bot")
