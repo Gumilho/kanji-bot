@@ -73,7 +73,7 @@ async def on_message(message):
                         print("right!")
                         print(SCORE)
                         SCORE[cur]-=1
-	        else:
+                else:
                         message.channel.send("wrong!")
                         print("wrong!")
 print("initializing bot")
