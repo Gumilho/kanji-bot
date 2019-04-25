@@ -51,7 +51,7 @@ async def bgtask():
                 print("fetching a random kanji..."," ")
                 sel = random.choice(rand_list)
                 await channel.send(sel)
-                cur = KANJI[sel]
+                cur = sel
                 print("sent")
                 await asyncio.sleep(TIME)
 
@@ -68,11 +68,12 @@ async def on_message(message):
 		return
 	else:
                 print("answer received!")
-                if message.content == cur:
+                if message.content == KANJI[cur]:
                         await message.channel.send("right!")
                         print("right!")
                         print(SCORE)
-                        SCORE[cur]-=1
+                        SCORE[KANJI[cur]]-=1
+                        rand_list.remove(cur)
                 else:
                         await message.channel.send("wrong!")
                         print("wrong!")
