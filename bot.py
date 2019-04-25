@@ -14,7 +14,7 @@ CONFIG = {}
 # KANJI_SIZE = 0
 cur = ""
 async def load():
-        print("loading files...", end="")
+        print("loading data... ", end="")
         data = json.load(open("data.json","r"))
         config = json.load(open("config.json","r"))
         SCORE = data["score"]
@@ -35,6 +35,7 @@ async def save():
 async def bgtask():
 	# channel = client.get_guild(int(GUILD_ID)).get_channel(int(CHANNEL_ID))
         channel = client.guilds[0].channels[1]
+        print("initializing background task")
         while True:
                 sel = random.choice(list(KANJI))
                 await channel.send(sel)
@@ -45,8 +46,7 @@ async def bgtask():
 @client.event
 async def on_ready():
         await load()
-        print('hello')
-        #client.loop.create_task(bgtask())
+        client.loop.create_task(bgtask())
 
 @client.event
 async def on_message(message):
@@ -55,6 +55,6 @@ async def on_message(message):
 	else:
 		await message.channel.send("Hi")
 		
-print('a')
+print("initializing bot")
 client.run(os.environ['TOKEN'])
 # client.run(json.load(open("token.json"))["TOKEN"])
