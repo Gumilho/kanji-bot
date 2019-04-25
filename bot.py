@@ -77,6 +77,7 @@ async def on_message(message):
                 else:
                         await message.channel.send("wrong!")
                         print("wrong!")
+                        rand_list.append(cur)
 print("initializing bot")
 client.run(os.environ['TOKEN'])
 # client.run(json.load(open("token.json"))["TOKEN"])
