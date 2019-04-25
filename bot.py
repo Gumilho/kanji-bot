@@ -17,8 +17,8 @@ async def load():
         print("loading data... ", end="")
         data = json.load(open("data.json","r"))
         config = json.load(open("config.json","r"))
-        SCORE = data["score"]
-        KANJI = data["kanji"]
+        SCORE = data["score"].copy()
+        KANJI = data["kanji"].copy()
         #print(list(KANJI))
         GUILD_ID = config["guild"]
         # print(GUILD_ID)
