@@ -46,7 +46,7 @@ async def bgtask():
 
 @client.event
 async def on_ready():
-        await load()
+        load()
         client.loop.create_task(bgtask())
 
 @client.event
