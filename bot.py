@@ -69,7 +69,8 @@ async def on_message(message):
 	else:
 		if message.content == cur:
                         print("right!")
-                        SCORE[cur]-=1
+                        print(SCORE)
+                        # SCORE[cur]-=1
 		
 print("initializing bot")
 client.run(os.environ['TOKEN'])
