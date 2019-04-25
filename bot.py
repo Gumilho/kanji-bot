@@ -67,10 +67,11 @@ async def on_message(message):
 	if message.author == client.user:
 		return
 	else:
+                print("answer received!")
 		if message.content == cur:
                         print("right!")
                         print(SCORE)
-                        # SCORE[cur]-=1
+                        SCORE[cur]-=1
 		
 print("initializing bot")
 client.run(os.environ['TOKEN'])
