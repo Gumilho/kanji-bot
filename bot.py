@@ -34,8 +34,8 @@ async def load():
 
 async def create_list():
         global rand_list
-        for key, val in SCORE.items():
-                rand_list += [key]*val
+        for key, val in KANJI.items():
+                rand_list += [key]*SCORE[val
 
 async def save():
         print("saving files...", end="")
