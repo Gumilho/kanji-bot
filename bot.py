@@ -9,7 +9,7 @@ client = discord.Client()
 
 async def save():
         print("saving files...", end="")
-        json.dump(SCORE,open("data.json","w"))
+        json.dump(config.SCORE,open("data.json","w"))
         print("done")
 
 async def bgtask():
@@ -20,7 +20,7 @@ async def bgtask():
                 print(list(config.KANJI))
                 sel = random.choice(list(config.KANJI))
                 await channel.send(sel)
-                cur = KANJI[sel]
+                cur = config.KANJI[sel]
                 print(cur)
                 await asyncio.sleep(config.TIME)
 
