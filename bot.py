@@ -69,12 +69,12 @@ async def on_message(message):
 	else:
                 print("answer received!")
                 if message.content == cur:
-                        message.channel.send("right!")
+                        await message.channel.send("right!")
                         print("right!")
                         print(SCORE)
                         SCORE[cur]-=1
                 else:
-                        message.channel.send("wrong!")
+                        await message.channel.send("wrong!")
                         print("wrong!")
 print("initializing bot")
 client.run(os.environ['TOKEN'])
