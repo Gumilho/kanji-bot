@@ -68,7 +68,7 @@ async def on_message(message):
 		return
 	else:
                 print("answer received!")
-		if message.content == cur:
+                if message.content == cur:
                         print("right!")
                         print(SCORE)
                         SCORE[cur]-=1
