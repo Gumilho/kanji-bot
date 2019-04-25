@@ -1,6 +1,7 @@
-import random
 
-aa = {"a": "isbdiajb", "b": "grijb"}
-
-sel = random.choice(list(aa))
-print(sel)
+a = 0
+def k():
+    global a
+    a = 2
+k()
+print(a)

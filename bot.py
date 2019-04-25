@@ -3,31 +3,56 @@ import asyncio
 import random
 import os
 import json
-import config
 
 client = discord.Client()
+SCORE = []
+KANJI = {}
+GUILD_ID = 0
+CHANNEL_ID = 0
+TIME = 0
+# KANJI_SIZE = 0
+cur = ""
+async def load():
+        print("loading data... ", end="")
+        data = json.load(open("data.json","r"))
+        config = json.load(open("config.json","r"))
+        global KANJI
+        global SCORE
+        global GUILD_ID
+        global CHANNEL_ID
+        global TIME
+        SCORE = data["score"].copy()
+        KANJI = data["kanji"].copy()
+        #print(list(KANJI))
+        GUILD_ID = config["guild"]
+        # print(GUILD_ID)
+        CHANNEL_ID = config["channel"]
+        TIME = config["time"]
+        # KANJI_SIZE = len(KANJI)
+        print("done")
 
 async def save():
         print("saving files...", end="")
-        json.dump(config.SCORE,open("data.json","w"))
+        json.dump(SCORE,open("data.json","w"))
         print("done")
 
 async def bgtask():
+        global cur
 	# channel = client.get_guild(int(GUILD_ID)).get_channel(int(CHANNEL_ID))
         channel = client.guilds[0].channels[1]
         print("initializing background task")
         while True:
-                print(list(config.KANJI))
-                sel = random.choice(list(config.KANJI))
+                print(list(KANJI))
+                sel = random.choice(list(KANJI))
                 await channel.send(sel)
-                cur = config.KANJI[sel]
+                cur = KANJI[sel]
                 print(cur)
-                await asyncio.sleep(config.TIME)
+                await asyncio.sleep(TIME)
 
 @client.event
 async def on_ready():
-        await config.load()
-        print(config.KANJI)
+        await load()
+        print(KANJI)
         client.loop.create_task(bgtask())
 
 @client.event
