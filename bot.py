@@ -5,11 +5,12 @@ import os
 import json
 
 client = discord.Client()
-SCORE = []
+SCORE = {}
 KANJI = {}
 GUILD_ID = 0
 CHANNEL_ID = 0
 TIME = 0
+rand_list = []
 # KANJI_SIZE = 0
 cur = ""
 async def load():
@@ -31,6 +32,11 @@ async def load():
         # KANJI_SIZE = len(KANJI)
         print("done")
 
+async def create_list():
+        global rand_list
+        for key, val in KANJI.items():
+                rand_list += [key]*SCORE[val]
+
 async def save():
         print("saving files...", end="")
         json.dump(SCORE,open("data.json","w"))
@@ -42,17 +48,18 @@ async def bgtask():
         channel = client.guilds[0].channels[1]
         print("initializing background task")
         while True:
-                print(list(KANJI))
-                sel = random.choice(list(KANJI))
+                print("fetching a random kanji..."," ")
+                sel = random.choice(rand_list)
                 await channel.send(sel)
-                cur = KANJI[sel]
-                print(cur)
+                cur = sel
+                print("sent")
                 await asyncio.sleep(TIME)
 
 @client.event
 async def on_ready():
         await load()
-        print(KANJI)
+        await create_list()
+        # print(KANJI)
         client.loop.create_task(bgtask())
 
 @client.event
@@ -60,8 +67,16 @@ async def on_message(message):
 	if message.author == client.user:
 		return
 	else:
-		await message.channel.send("Hi")
-		
+                print("answer received!")
+                if message.content == KANJI[cur]:
+                        await message.channel.send("right!")
+                        print("right!")
+                        print(SCORE)
+                        SCORE[KANJI[cur]]-=1
+                        rand_list.remove(cur)
+                else:
+                        await message.channel.send("wrong!")
+                        print("wrong!")
 print("initializing bot")
 client.run(os.environ['TOKEN'])
 # client.run(json.load(open("token.json"))["TOKEN"])
