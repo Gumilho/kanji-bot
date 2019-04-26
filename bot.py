@@ -3,18 +3,42 @@ import asyncio
 import random
 import os
 import json
+import config
 
 client = discord.Client()
-
-SCORE = {}
 KANJI = {}
+rand_list = []
 GUILD_ID = 0
 CHANNEL_ID = 0
 TIME = 0
-rand_list = []
-channel = discord.abc.GuildChannel()
 cur = ""
 # KANJI_SIZE = 0
+
+async def channel():
+        return client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
+
+async def config():
+        return json.load(open("config.json","r"))]
+
+async def guild_id():
+        return config.guild
+
+async def channel_id():
+        return config()["channel"]
+
+async def interval():
+        return config()["time"]
+
+async def data():
+        return json.load(open("data.json","r"))
+
+async def score():
+        dat = await data()
+        return await data()["score"]
+
+async def kanji():
+        dat = await data()
+        return await data()["kanji"]
 
 async def load():
         global KANJI
@@ -26,14 +50,9 @@ async def load():
 
         print("loading data... ", end="")
 
-        data = json.load(open("data.json","r"))
-        config = json.load(open("config.json","r"))
-
-        channel = client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
-        SCORE = data["score"].copy()
-        KANJI = data["kanji"].copy()
-        GUILD_ID = config["guild"]
-        CHANNEL_ID = config["channel"]
+        channel = 
+        
+        
         TIME = config["time"]
         print("done")
 
