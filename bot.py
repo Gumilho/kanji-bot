@@ -30,6 +30,7 @@ class Configuration:
     def ___init___(self):
         data = json.load(open("config.json","r"))
         self.guild_id = data["guild"]
+        print(self.guild_id)
         self.channel_id = data["channel"]
         self.time = data["time"]
 config = Configuration()
