@@ -15,7 +15,7 @@ class Data:
     async def add(self, key):
         self.score[key] += 1
 
-    def ___init___(self):
+    def __init__(self):
         data = json.load(open("data.json","r"))
         self.kanji = data["kanji"]
         self.score = data["score"]
@@ -27,7 +27,7 @@ class Configuration:
     channel_id = 0
     time = 0
 
-    def ___init___(self):
+    def __init__(self):
         print("config started")
         data = json.load(open("config.json","r"))
         self.guild_id = data["guild"]
