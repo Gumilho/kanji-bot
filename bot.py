@@ -5,6 +5,7 @@ import os
 import json
 
 client = discord.Client()
+channel = discord.abc.GuildChannel()
 
 class Data:
 
@@ -17,8 +18,7 @@ class Data:
     async def add(self, key):
         self.score[key] += 1
 
-    def __init__(self):
-        data = json.load(open("data.json","r"))
+    async def _init(self, data):
         self.kanji = data["kanji"]
         self.score = data["score"]
 data = Data()
@@ -29,13 +29,13 @@ class Configuration:
     channel_id = 0
     time = 0
 
-    def __init__(self):
-        print("config started")
-        data = json.load(open("config.json","r"))
+    async def _init(self, data):
         self.guild_id = data["guild"]
-        print(client.guilds)
+        print(client)
         self.channel_id = data["channel"]
         self.time = data["time"]
+
+
 config = Configuration()
 
 class Question:
@@ -54,19 +54,16 @@ class Question:
             await data.add(self.current)
             self.rand_list.append(self.current)
 
-
-    def __init__(self):
+    async def _init(self):
         self.rand_list = [key*data.score[key] for key in data.kanji]
         self.current = random.choice(self.rand_list)
 q = Question()
-
-channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
 
 async def bgtask():
     # channel = client.guilds[0].channels[1]
     print("initializing background task")
     while True:
-        q = Question()
+        await q._init()
         await channel.send("how do you say " + q.current +"?")
         await asyncio.sleep(config.time)
 
@@ -77,11 +74,17 @@ async def save():
 
 @client.event
 async def on_ready():
+    print("ready!")
+    global channel
+    await data._init(json.load(open("data.json", encoding="utf8")))
+    await config._init(json.load(open("config.json", encoding="utf8")))
     print(client.guilds)
+    channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
     client.loop.create_task(bgtask())
 
 @client.event
 async def on_message(message):
+    print("ready!")
     if message.author == client.user:
         return
     else:
@@ -90,5 +93,5 @@ async def on_message(message):
 
                         
 print("initializing bot")
-client.run(os.environ['TOKEN'])
-# client.run(json.load(open("token.json"))["TOKEN"])
+# client.run(os.environ['TOKEN'])
+client.run("NTY5NTY0NjcwODg5ODIwMTYw.XMQRcQ.SoCugc1Ywi30I5yH3NYx-c7oquY")
