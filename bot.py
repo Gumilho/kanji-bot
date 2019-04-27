@@ -80,7 +80,7 @@ async def on_ready():
     await config._init(json.load(open("config.json", encoding="utf8")))
     print(client.guilds)
     print(config.guild_id)
-    channel = client.guilds[0].channels[0]
+    channel = client.guilds[0].channels[1]
     client.loop.create_task(bgtask())
 
 @client.event
