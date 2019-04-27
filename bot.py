@@ -79,6 +79,7 @@ async def on_ready():
     await data._init(json.load(open("data.json", encoding="utf8")))
     await config._init(json.load(open("config.json", encoding="utf8")))
     print(client.guilds)
+    print(config.guild_id)
     channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
     client.loop.create_task(bgtask())
 
