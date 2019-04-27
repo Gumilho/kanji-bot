@@ -110,7 +110,7 @@ async def on_message(message):
     else:
         if message.content.startswith(config.prefix):
             c = Command()
-            c.run(message.content[1:0])
+            await c.run(message.content[1:0])
         else:
             print("answer received!")
             await q.verify(message.content)
