@@ -73,6 +73,7 @@ q = Question()
 class Command:
 
     async def run(self,cmd):
+        print("command received")
         method_name = 'command_' + str(cmd)
         method = getattr(self, method_name, lambda: "Invalid month")
         return method()
