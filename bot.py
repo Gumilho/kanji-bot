@@ -59,7 +59,7 @@ class Question:
 
 
 client = discord.Client()
-print("guild id: " + str(config.guild_id))
+print("guild id: " + str(client.guilds))
 channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
 q = Question()
 
