@@ -3,116 +3,88 @@ import asyncio
 import random
 import os
 import json
-import config
+
+class Data:
+
+    kanji = {}
+    score = {}
+    
+    async def rm(self, key):
+        self.score[key] -= 1
+
+    async def add(self, key):
+        self.score[key] += 1
+
+    def ___init___(self):
+        data = json.load(open("data.json","r"))
+        self.kanji = data["kanji"]
+        self.score = data["score"]
+data = Data()
+
+class Configuration:
+
+    guild_id = 0
+    channel_id = 0
+    time = 0
+
+    def ___init___(self):
+        data = json.load(open("config.json","r"))
+        self.guild_id = data["guild"]
+        self.channel_id = data["channel"]
+        self.time = data["time"]
+config = Configuration()
+
+class Question:
+
+    current = ""
+    verdict = ""
+    rand_list = []
+
+    async def verify(self, answer):
+        if answer == data.kanji[self.current]:
+            await channel.send("right!")
+            await data.rm(self.current)
+            self.rand_list.remove(self.current)
+        else:
+            await channel.send("wrong! The correct answer is " + data.kanji[self.current])
+            await data.add(self.current)
+            self.rand_list.append(self.current)
+
+
+    def __init__(self):
+        self.rand_list = [key*data.score[key] for key in data.kanji]
+        self.current = random.choice(self.rand_list)
+
 
 client = discord.Client()
-KANJI = {}
-rand_list = []
-GUILD_ID = 0
-CHANNEL_ID = 0
-TIME = 0
-cur = ""
-# KANJI_SIZE = 0
-
-async def channel():
-        return client.get_guild(GUILD_ID).get_channel(CHANNEL_ID)
-
-async def config():
-        return json.load(open("config.json","r"))]
-
-async def guild_id():
-        return config.guild
-
-async def channel_id():
-        return config()["channel"]
-
-async def interval():
-        return config()["time"]
-
-async def data():
-        return json.load(open("data.json","r"))
-
-async def score():
-        dat = await data()
-        return await data()["score"]
-
-async def kanji():
-        dat = await data()
-        return await data()["kanji"]
-
-async def load():
-        global KANJI
-        global SCORE
-        global GUILD_ID
-        global CHANNEL_ID
-        global TIME
-        global channel
-
-        print("loading data... ", end="")
-
-        channel = 
-        
-        
-        TIME = config["time"]
-        print("done")
-
-async def create_list():
-        global rand_list
-        for key in KANJI:
-                rand_list += [key]*SCORE[key]
+channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
+q = Question()
 
 async def bgtask():
-        global cur
-        # channel = client.guilds[0].channels[1]
-        print("initializing background task")
-        while True:
-                print("fetching a random kanji..."," ")
-                sel = random.choice(rand_list)
-                await channel.send("how do you say " + sel +"?")
-                cur = sel
-                print("sent")
-                await asyncio.sleep(TIME)
+    # channel = client.guilds[0].channels[1]
+    print("initializing background task")
+    while True:
+        q = Question()
+        await channel.send("how do you say " + q.current +"?")
+        await asyncio.sleep(config.time)
 
 async def save():
-        print("saving files...", end="")
-        json.dump(SCORE,open("data.json","w"))
-        print("done")
-
-async def right_ans():
-        global cur
-        await channel.send("right!")
-        # print("right!")
-        SCORE[cur]-=1
-        print(SCORE)
-        rand_list.remove(cur)
-        # cur = ""
-
-async def wrong_ans():
-        global cur
-        await channel.send("wrong! The correct answer is " + KANJI[cur])
-        # print("wrong!")
-        SCORE[cur]+=1
-        print(SCORE)
-        rand_list.append(cur)
-        # cur = ""
+    print("saving files...", end="")
+    json.dump(data.score,open("data.json","w"))
+    print("done")
 
 @client.event
 async def on_ready():
-        await load()
-        await create_list()
-        # print(KANJI)
-        client.loop.create_task(bgtask())
+    client.loop.create_task(bgtask())
 
 @client.event
 async def on_message(message):
-	if message.author == client.user:
-		return
-	else:
-                print("answer received!")
-                if message.content == KANJI[cur]:
-                        await right_ans()
-                else:
-                        await wrong_ans()
+    if message.author == client.user:
+        return
+    else:
+        print("answer received!")
+        await q.verify(message.content)
+
                         
 print("initializing bot")
 client.run(os.environ['TOKEN'])
