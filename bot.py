@@ -59,7 +59,6 @@ class Question:
 q = Question()
 
 client = discord.Client()
-print(client.guilds)
 channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
 
 async def bgtask():
@@ -77,6 +76,7 @@ async def save():
 
 @client.event
 async def on_ready():
+    print(client.guilds)
     client.loop.create_task(bgtask())
 
 @client.event
