@@ -28,6 +28,7 @@ class Configuration:
     time = 0
 
     def ___init___(self):
+        print("config started")
         data = json.load(open("config.json","r"))
         self.guild_id = data["guild"]
         print(self.guild_id)
