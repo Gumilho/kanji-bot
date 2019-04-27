@@ -75,7 +75,6 @@ async def save():
 
 @client.event
 async def on_ready():
-    print("ready!")
     global channel
     await data._init(json.load(open("data.json", encoding="utf8")))
     await config._init(json.load(open("config.json", encoding="utf8")))
@@ -86,7 +85,6 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    print("ready!")
     if message.author == client.user:
         return
     else:
