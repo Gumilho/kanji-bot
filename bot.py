@@ -72,15 +72,15 @@ q = Question()
 
 class Command:
 
-    async def run(self,cmd):
-        print("command received")
-        method_name = 'command_' + str(cmd)
-        method = getattr(self, method_name, lambda: "Invalid month")
-        return await method()
-
     async def command_score(self):
         print("running command")
         await channel.send(data.score)
+        
+    async def run(self,cmd):
+        print("command received")
+        method_name = 'command_' + str(cmd)
+        method = getattr(self, method_name)
+        await method()
 
 async def bgtask():
     # channel = client.guilds[0].channels[1]
