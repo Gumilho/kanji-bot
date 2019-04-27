@@ -4,6 +4,8 @@ import random
 import os
 import json
 
+client = discord.Client()
+
 class Data:
 
     kanji = {}
@@ -31,7 +33,7 @@ class Configuration:
         print("config started")
         data = json.load(open("config.json","r"))
         self.guild_id = data["guild"]
-        print(self.guild_id)
+        print(client.guilds)
         self.channel_id = data["channel"]
         self.time = data["time"]
 config = Configuration()
@@ -58,7 +60,6 @@ class Question:
         self.current = random.choice(self.rand_list)
 q = Question()
 
-client = discord.Client()
 channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
 
 async def bgtask():
