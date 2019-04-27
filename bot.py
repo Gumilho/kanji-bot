@@ -94,5 +94,5 @@ async def on_message(message):
 
                         
 print("initializing bot")
-# client.run(os.environ['TOKEN'])
-client.run("NTY5NTY0NjcwODg5ODIwMTYw.XMQRcQ.SoCugc1Ywi30I5yH3NYx-c7oquY")
+client.run(os.environ['TOKEN'])
+
