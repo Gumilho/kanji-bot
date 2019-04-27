@@ -59,7 +59,7 @@ class Question:
 q = Question()
 
 client = discord.Client()
-print(client.guilds)
+print(client)
 channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
 
 async def bgtask():
