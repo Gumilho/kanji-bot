@@ -56,12 +56,11 @@ class Question:
     def __init__(self):
         self.rand_list = [key*data.score[key] for key in data.kanji]
         self.current = random.choice(self.rand_list)
-
+q = Question()
 
 client = discord.Client()
-print("guild id: " + str(client.guilds))
+print(client.guilds)
 channel = client.get_guild(config.guild_id).get_channel(config.channel_id)
-q = Question()
 
 async def bgtask():
     # channel = client.guilds[0].channels[1]
