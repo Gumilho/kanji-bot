@@ -22,7 +22,8 @@ class Data:
         data = {}
         data['score'] = self.score
         data['kanji'] = self.kanji
-        json.dump(data,open("data.json","w"))
+        json.dumps(data,open("data.json","w"))
+        print("saved!")
 
     async def _init(self, data):
         self.kanji = data["kanji"]
@@ -90,10 +91,6 @@ async def bgtask():
         await channel.send("how do you say " + q.current +"?")
         await asyncio.sleep(config.time)
 
-async def save():
-    print("saving files...", end="")
-    json.dump(data.score,open("data.json","w"))
-    print("done")
 
 @client.event
 async def on_ready():
