@@ -22,7 +22,7 @@ class Data:
         data = {}
         data['score'] = self.score
         data['kanji'] = self.kanji
-        json.dumps(data,open("data.json","w"))
+        json.dump(data,open("data.json","w"), indent=4)
         print("saved!")
 
     async def _init(self, data):
