@@ -75,7 +75,7 @@ class Command:
     async def command_score(self):
         print("running command")
         await channel.send(data.score)
-        
+
     async def run(self,cmd):
         print("command received")
         method_name = 'command_' + str(cmd)
@@ -112,7 +112,7 @@ async def on_message(message):
     else:
         if message.content.startswith(config.prefix):
             c = Command()
-            await c.run(message.content[1:0])
+            await c.run(message.content[1:])
         else:
             print("answer received!")
             await q.verify(message.content)
