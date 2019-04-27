@@ -18,31 +18,41 @@ class Data:
     async def add(self, key):
         self.score[key] += 1
 
+    async def save(self):
+        data = {}
+        data['score'] = self.score
+        data['kanji'] = self.kanji
+        json.dump(data,open("data.json","w"))
+
     async def _init(self, data):
         self.kanji = data["kanji"]
         self.score = data["score"]
 data = Data()
 
 class Configuration:
-
+    """
     guild_id = 0
     channel_id = 0
     time = 0
-
+    prefix = ""
+    """
     async def _init(self, data):
         self.guild_id = data["guild"]
-        print(client)
         self.channel_id = data["channel"]
         self.time = data["time"]
-
-
+        self.prefix = data["prefix"]
 config = Configuration()
 
 class Question:
 
     current = ""
-    verdict = ""
     rand_list = []
+    
+    async def is_up(self):
+        return False if self.current == "" else True
+
+    async def reset(self):
+        self.current = ""
 
     async def verify(self, answer):
         if answer == data.kanji[self.current]:
@@ -59,6 +69,16 @@ class Question:
             self.rand_list += [key]*data.score[key]
         self.current = random.choice(self.rand_list)
 q = Question()
+
+class Command:
+
+    async def run(self,cmd):
+        method_name = 'command_' + str(cmd)
+        method = getattr(self, method_name, lambda: "Invalid month")
+        return method()
+
+    async def command_score(self):
+        await channel.send(data.score)
 
 async def bgtask():
     # channel = client.guilds[0].channels[1]
@@ -88,9 +108,14 @@ async def on_message(message):
     if message.author == client.user:
         return
     else:
-        print("answer received!")
-        await q.verify(message.content)
-
+        if message.content.startswith(config.prefix):
+            c = Command()
+            c.run(message.content[1:0])
+        else:
+            print("answer received!")
+            await q.verify(message.content)
+            await q.reset()
+            await data.save()
                         
 print("initializing bot")
 client.run(os.environ['TOKEN'])
