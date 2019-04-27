@@ -55,7 +55,9 @@ class Question:
             self.rand_list.append(self.current)
 
     async def _init(self):
-        self.rand_list = [key*data.score[key] for key in data.kanji]
+        for key in data.kanji:
+            self.rand_list.append
+        self.rand_list = [[key]*data.score[key] for key in data.kanji]
         self.current = random.choice(self.rand_list)
 q = Question()
 
