@@ -22,8 +22,10 @@ class Data:
         data = {}
         data['score'] = self.score
         data['kanji'] = self.kanji
-        json.dump(data,open("data.json","w"), indent=4)
+        f = open("data.json","w"),
+        f.write(json.dumps(data, indent=4))
         print("saved!")
+        f.close()
 
     async def _init(self, data):
         self.kanji = data["kanji"]
