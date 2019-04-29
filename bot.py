@@ -22,10 +22,9 @@ class Data:
         data = {}
         data['score'] = self.score
         data['kanji'] = self.kanji
-        f = open("data.json","w"),
-        f.write(json.dumps(data, indent=4))
+        
+        json.dumps(data, indent=4)
         print("saved!")
-        f.close()
 
     async def _init(self, data):
         self.kanji = data["kanji"]
@@ -86,9 +85,8 @@ class Command:
         await method()
 
 async def bgtask():
-    # channel = client.guilds[0].channels[1]
-    print("initializing background task")
-    while True:
+    print(q.current)
+    while q.current == "":
         await q._init()
         await channel.send("how do you say " + q.current +"?")
         await asyncio.sleep(config.time)
