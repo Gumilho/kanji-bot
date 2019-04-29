@@ -88,6 +88,7 @@ async def bgtask():
     while True:
         print(q.current)
         if not q.current == "":
+            await asyncio.sleep(config.time)
             continue
         await q._init()
         await channel.send("how do you say " + q.current +"?")
