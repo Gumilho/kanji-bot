@@ -2,8 +2,12 @@ import discord
 import asyncio
 import random
 import os
+import psycopg2
 import json
 
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
+print(conn)
 client = discord.Client()
 channel = discord.abc.GuildChannel()
 
@@ -76,7 +80,7 @@ class Command:
 
     async def command_score(self):
         print("running command")
-        await channel.send(data.score)
+        await channel.send(json.dumps(data.score, indent = 2))
 
     async def run(self,cmd):
         print("command received")
@@ -86,7 +90,7 @@ class Command:
 
 async def bgtask():
     while True:
-        print(q.current)
+        # print(q.current)
         if not q.current == "":
             await asyncio.sleep(config.time)
             continue
