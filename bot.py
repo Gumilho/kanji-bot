@@ -85,8 +85,10 @@ class Command:
         await method()
 
 async def bgtask():
-    print(q.current)
-    while q.current == "":
+    while True:
+        print(q.current)
+        if not q.current == "":
+            continue
         await q._init()
         await channel.send("how do you say " + q.current +"?")
         await asyncio.sleep(config.time)
@@ -97,8 +99,8 @@ async def on_ready():
     global channel
     await data._init(json.load(open("data.json", encoding="utf8")))
     await config._init(json.load(open("config.json", encoding="utf8")))
-    print(client.guilds)
-    print(config.guild_id)
+    #print(client.guilds)
+    #print(config.guild_id)
     channel = client.guilds[0].channels[1]
     client.loop.create_task(bgtask())
 
