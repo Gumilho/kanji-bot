@@ -11,7 +11,7 @@ c = conn.cursor()
 c.execute("create table hello (a int, b int)")
 c.execute("insert into hello (a, b) values (1, 2)")
 c.execute("select * from hello")
-print(c.cursor.fetchall())
+print(c.fetchall())
 client = discord.Client()
 channel = discord.abc.GuildChannel()
 
