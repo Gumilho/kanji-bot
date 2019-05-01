@@ -8,7 +8,9 @@ import json
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
 c = conn.cursor()
-c.execute("select * from kanji")
+c.execute("create table hello (a int, b int)")
+c.execute("insert into table hello (a, b),(1, 2)")
+c.execute("select * from hello")
 print(c.cursor.fetchall())
 client = discord.Client()
 channel = discord.abc.GuildChannel()
