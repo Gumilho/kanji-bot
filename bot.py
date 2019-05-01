@@ -7,15 +7,14 @@ import json
 
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
-print(conn)
+c = conn.cursor()
+c.execute("select * from kanji")
+print(c.cursor.fetchall())
 client = discord.Client()
 channel = discord.abc.GuildChannel()
 
 class Data:
 
-    kanji = {}
-    score = {}
-    
     async def rm(self, key):
         self.score[key] -= 1
 
@@ -23,16 +22,14 @@ class Data:
         self.score[key] += 1
 
     async def save(self):
-        data = {}
-        data['score'] = self.score
-        data['kanji'] = self.kanji
-        
-        json.dumps(data, indent=4)
-        print("saved!")
+        self.cursor.execute("Update kanji set score = %s where id = %s")
 
     async def _init(self, data):
-        self.kanji = data["kanji"]
-        self.score = data["score"]
+        self.cursor = conn.cursor()
+        self.cursor.execute("select * from kanji where name = 'romaji'", (str,))
+        self.romaji = await self.cursor.fetchall()
+        self.cursor.execute("select * from kanji where name = 'score'", (str,))
+        self.score = await self.cursor.fetchall()
 data = Data()
 
 class Configuration:
@@ -61,17 +58,17 @@ class Question:
         self.current = ""
 
     async def verify(self, answer):
-        if answer == data.kanji[self.current]:
+        if answer == data.romaji[self.current]:
             await channel.send("right!")
             await data.rm(self.current)
             self.rand_list.remove(self.current)
         else:
-            await channel.send("wrong! The correct answer is " + data.kanji[self.current])
+            await channel.send("wrong! The correct answer is " + data.romaji[self.current])
             await data.add(self.current)
             self.rand_list.append(self.current)
 
     async def _init(self):
-        for key in data.kanji:
+        for key in data.romaji:
             self.rand_list += [key]*data.score[key]
         self.current = random.choice(self.rand_list)
 q = Question()
@@ -80,7 +77,7 @@ class Command:
 
     async def command_score(self):
         print("running command")
-        await channel.send(json.dumps(data.score, indent = 2))
+        await channel.send("```prolog\n" + json.dumps(data.score, indent = 2) + "```")
 
     async def run(self,cmd):
         print("command received")
@@ -104,8 +101,6 @@ async def on_ready():
     global channel
     await data._init(json.load(open("data.json", encoding="utf8")))
     await config._init(json.load(open("config.json", encoding="utf8")))
-    #print(client.guilds)
-    #print(config.guild_id)
     channel = client.guilds[0].channels[1]
     client.loop.create_task(bgtask())
 
@@ -125,4 +120,3 @@ async def on_message(message):
                         
 print("initializing bot")
 client.run(os.environ['TOKEN'])
-
