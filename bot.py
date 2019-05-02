@@ -9,12 +9,10 @@ DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
 c = conn.cursor()
 #c.execute("create table hello (a int, b int)")
-c.execute("select * from helloworld")
-print(c.fetchall())
-c.execute("update helloworld set a = 2, b = 3")
-conn.commit()
-c.execute("select * from helloworld")
-print(c.fetchall())
+#c.execute("update helloworld set a = 2, b = 3")
+#conn.commit()
+#c.execute("select * from helloworld")
+#print(c.fetchall())
 client = discord.Client()
 channel = discord.abc.GuildChannel()
 
@@ -27,14 +25,16 @@ class Data:
         self.score[key] += 1
 
     async def save(self):
-        self.cursor.execute("Update kanji set score = %s where id = %s")
+        for key in self.romaji
+            self.cursor.execute("update kanji set score = %s where kanji = %s", (self.score[key],key)
 
-    async def _init(self, data):
+    async def _init(self):
         self.cursor = conn.cursor()
-        self.cursor.execute("select * from kanji where name = 'romaji'", (str,))
-        self.romaji = await self.cursor.fetchall()
-        self.cursor.execute("select * from kanji where name = 'score'", (str,))
-        self.score = await self.cursor.fetchall()
+        self.cursor.execute("select * from kanji", (str,))
+        lis = self.cursor.fetchall()
+        for tmp in lis
+            self.romaji[tmp[0]] = tmp[1]
+            self.score[tmp[0]] = tmp[2]
 data = Data()
 
 class Configuration:
@@ -53,7 +53,6 @@ config = Configuration()
 
 class Question:
 
-    current = ""
     rand_list = []
     
     async def is_up(self):
@@ -93,7 +92,7 @@ class Command:
 async def bgtask():
     while True:
         # print(q.current)
-        if not q.current == "":
+        if q.is_up():
             await asyncio.sleep(config.time)
             continue
         await q._init()
@@ -104,7 +103,7 @@ async def bgtask():
 @client.event
 async def on_ready():
     global channel
-    await data._init(json.load(open("data.json", encoding="utf8")))
+    await data._init()
     await config._init(json.load(open("config.json", encoding="utf8")))
     channel = client.guilds[0].channels[1]
     client.loop.create_task(bgtask())
