@@ -9,12 +9,11 @@ DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
 c = conn.cursor()
 #c.execute("create table hello (a int, b int)")
-c.execute("insert into hello (a, b) values (1, 2)")
-c.execute("select * from hello")
+#c.execute("insert into hello (a, b) values (1, 2)")
+c.execute("select * from helloworld")
 print(c.fetchall())
 client = discord.Client()
 channel = discord.abc.GuildChannel()
-
 class Data:
 
     async def rm(self, key):
