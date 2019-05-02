@@ -25,7 +25,7 @@ class Data:
         self.score[key] += 1
 
     async def save(self):
-        for key in self.romaji
+        for key in self.romaji:
             self.cursor.execute("update kanji set score = %s where kanji = %s", (self.score[key],key)
 
     async def _init(self):
