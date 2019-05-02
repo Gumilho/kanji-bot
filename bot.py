@@ -9,7 +9,7 @@ DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
 c = conn.cursor()
 #c.execute("create table hello (a int, b int)")
-c.execute("update helloworld set a = 2, b = 3")
+#c.execute("update helloworld set a = 2, b = 3")
 c.execute("select * from helloworld")
 print(c.fetchall())
 client = discord.Client()
