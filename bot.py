@@ -17,6 +17,7 @@ c.execute("select * from helloworld")
 print(c.fetchall())
 client = discord.Client()
 channel = discord.abc.GuildChannel()
+
 class Data:
 
     async def rm(self, key):
