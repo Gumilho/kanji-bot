@@ -5,7 +5,6 @@ import os
 import psycopg2
 import json
 
-c = conn.cursor()
 #c.execute("create table hello (a int, b int)")
 #c.execute("update helloworld set a = 2, b = 3")
 #conn.commit()
@@ -28,8 +27,10 @@ class Data:
         self.conn.commit()
 
     async def _init(self):
+        self.romaji = {}
+        self.score = {}
         self.conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode = 'require')
-        self.cursor = conn.cursor()
+        self.cursor = self.conn.cursor()
         self.cursor.execute("select * from kanji", (str,))
         lis = self.cursor.fetchall()
         for tmp in lis:
@@ -50,12 +51,12 @@ class Configuration:
         channel_id = data["channel"]
         self.time = data["time"]
         self.prefix = data["prefix"]
-        self.channel = client.get_guild[guild_id].get_channels[channel_id]
+        self.channel = client.get_guild(guild_id).get_channels(channel_id)
 
 config = Configuration()
 
 class Question:
-    
+
     async def is_up(self):
         return False if self.current == "" else True
 
@@ -106,7 +107,7 @@ async def bgtask():
 async def on_ready():
     await data._init()
     await config._init(json.load(open("config.json", encoding="utf8")))
-    channel = client.guilds[0].channels[1]
+    #channel = client.guilds[0].channels[1]
     client.loop.create_task(bgtask())
 
 @client.event
