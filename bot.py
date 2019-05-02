@@ -5,8 +5,6 @@ import os
 import psycopg2
 import json
 
-DATABASE_URL = os.environ['DATABASE_URL']
-conn = psycopg2.connect(DATABASE_URL, sslmode = 'require')
 c = conn.cursor()
 #c.execute("create table hello (a int, b int)")
 #c.execute("update helloworld set a = 2, b = 3")
@@ -27,14 +25,17 @@ class Data:
     async def save(self):
         for key in self.romaji:
             self.cursor.execute("update kanji set score = %s where kanji = %s", (self.score[key],key))
+        self.conn.commit()
 
     async def _init(self):
+        self.conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode = 'require')
         self.cursor = conn.cursor()
         self.cursor.execute("select * from kanji", (str,))
         lis = self.cursor.fetchall()
         for tmp in lis:
             self.romaji[tmp[0]] = tmp[1]
             self.score[tmp[0]] = tmp[2]
+
 data = Data()
 
 class Configuration:
@@ -45,15 +46,15 @@ class Configuration:
     prefix = ""
     """
     async def _init(self, data):
-        self.guild_id = data["guild"]
-        self.channel_id = data["channel"]
+        guild_id = data["guild"]
+        channel_id = data["channel"]
         self.time = data["time"]
         self.prefix = data["prefix"]
+        self.channel = client.get_guild[guild_id].get_channels[channel_id]
+
 config = Configuration()
 
 class Question:
-
-    rand_list = []
     
     async def is_up(self):
         return False if self.current == "" else True
@@ -63,15 +64,16 @@ class Question:
 
     async def verify(self, answer):
         if answer == data.romaji[self.current]:
-            await channel.send("right!")
+            await config.channel.send("right!")
             await data.rm(self.current)
             self.rand_list.remove(self.current)
         else:
-            await channel.send("wrong! The correct answer is " + data.romaji[self.current])
+            await config.channel.send("wrong! The correct answer is " + data.romaji[self.current])
             await data.add(self.current)
             self.rand_list.append(self.current)
 
     async def _init(self):
+        self.rand_list = []
         for key in data.romaji:
             self.rand_list += [key]*data.score[key]
         self.current = random.choice(self.rand_list)
@@ -81,7 +83,7 @@ class Command:
 
     async def command_score(self):
         print("running command")
-        await channel.send("```prolog\n" + json.dumps(data.score, indent = 2) + "```")
+        await config.channel.send("```prolog\n" + json.dumps(data.score, indent = 2) + "```")
 
     async def run(self,cmd):
         print("command received")
@@ -96,13 +98,12 @@ async def bgtask():
             await asyncio.sleep(config.time)
             continue
         await q._init()
-        await channel.send("how do you say " + q.current +"?")
+        await config.channel.send("how do you say " + q.current +"?")
         await asyncio.sleep(config.time)
 
 
 @client.event
 async def on_ready():
-    global channel
     await data._init()
     await config._init(json.load(open("config.json", encoding="utf8")))
     channel = client.guilds[0].channels[1]
