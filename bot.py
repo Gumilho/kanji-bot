@@ -32,7 +32,7 @@ class Data:
         self.cursor = conn.cursor()
         self.cursor.execute("select * from kanji", (str,))
         lis = self.cursor.fetchall()
-        for tmp in lis
+        for tmp in lis:
             self.romaji[tmp[0]] = tmp[1]
             self.score[tmp[0]] = tmp[2]
 data = Data()
